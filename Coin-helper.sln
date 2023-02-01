@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31624.102
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Coin-helper", "Coin-helper\Coin-helper.csproj", "{790768D7-DF04-4531-9D98-EB2DB1D31BFE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{790768D7-DF04-4531-9D98-EB2DB1D31BFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{790768D7-DF04-4531-9D98-EB2DB1D31BFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{790768D7-DF04-4531-9D98-EB2DB1D31BFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{790768D7-DF04-4531-9D98-EB2DB1D31BFE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {418AB7A7-1B39-4F10-9F13-37CC72921491}
+	EndGlobalSection
+EndGlobal
