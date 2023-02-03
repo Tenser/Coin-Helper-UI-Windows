@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -20,6 +21,7 @@ namespace Coin_helper
         private String unit;
         private String currency;
         private String exchange;
+        public static String id;
         public Form1()
         {
             InitializeComponent();
@@ -145,6 +147,47 @@ namespace Coin_helper
         {
             Form2 form2 = new Form2();
             form2.ShowDialog();
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create("http://ec2-52-68-10-201.ap-northeast-1.compute.amazonaws.com:8080/user/logout");
+            httpWebRequest.ContentType = "application/json";
+            httpWebRequest.Method = "POST";
+            using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
+            {
+                string json = "{\"id\":\"" + Form1.id + "\", \"password\": \"\"}";
+                streamWriter.Write(json);
+                streamWriter.Flush();
+                streamWriter.Close();
+            }
+
+            var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+
+            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+            {
+                var result = streamReader.ReadToEnd();
+                String jsonData = result.ToString();
+                JObject jObject = JObject.Parse(jsonData);
+                if (jObject["message"].ToString().Equals("OK"))
+                {
+                    Application.Exit();
+                }
+                else
+                {
+                    MessageBox.Show(jObject["message"].ToString() + "sex");
+                }
+            }
         }
     }
 }
