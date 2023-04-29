@@ -33,7 +33,7 @@ namespace Coin_helper
         {
             using (WebClient wc = new WebClient())
             {
-                var json = wc.DownloadString("http://ec2-52-68-10-201.ap-northeast-1.compute.amazonaws.com:8080/coin/premium");
+                var json = wc.DownloadString("http://ec2-35-72-70-146.ap-northeast-1.compute.amazonaws.com:8080/coin/premium");
                 String jsonData = json.ToString();
                 JArray jArray = JArray.Parse(jsonData);
 
@@ -48,7 +48,7 @@ namespace Coin_helper
                     ListViewItem lvi = new ListViewItem(jtoken["coinName"].ToString());
                     lvi.SubItems.Add(jtoken["priceKorea"].ToString());
                     lvi.SubItems.Add(jtoken["priceAmerica"].ToString());
-                    lvi.SubItems.Add(((Double.Parse(jtoken["premium"].ToString()) - 1.0) * 100.0).ToString() + "%");
+                    lvi.SubItems.Add((Math.Round(((Double.Parse(jtoken["premium"].ToString()) - 1.0) * 100) * 100) / 100.0).ToString() + "%");
 
                     listView1.Items.Add(lvi);
                 }
