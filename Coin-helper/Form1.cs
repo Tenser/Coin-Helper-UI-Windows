@@ -12,6 +12,7 @@ using System.Windows.Forms;
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Coin_helper
 {
@@ -43,17 +44,17 @@ namespace Coin_helper
             String[] sortRules = { "volume", "price" };
             comboBox1.Items.AddRange(sortRules);
             comboBox1.SelectedIndex = 0;
-            this.sortRule = (String) comboBox1.SelectedItem;
+            this.sortRule = (String)comboBox1.SelectedItem;
 
             String[] units = { "5", "30", "60", "120", "240" };
             comboBox2.Items.AddRange(units);
             comboBox2.SelectedIndex = 0;
-            this.unit = (String) comboBox2.SelectedItem;
+            this.unit = (String)comboBox2.SelectedItem;
 
             String[] currencys = { "KRW", "USDT" };
             comboBox3.Items.AddRange(currencys);
             comboBox3.SelectedIndex = 0;
-            this.currency = (String)comboBox3.SelectedItem; 
+            this.currency = (String)comboBox3.SelectedItem;
 
             String[] exchanges = { "upbit", "binance" };
             comboBox4.Items.AddRange(exchanges);
@@ -65,7 +66,7 @@ namespace Coin_helper
         {
 
             using (WebClient wc = new WebClient())
-            { 
+            {
                 var json = wc.DownloadString("http://ec2-35-72-70-146.ap-northeast-1.compute.amazonaws.com:8080/coin/" + this.sortRule + "/ranking/" + unit + "/" + currency + "/" + exchange);
                 String jsonData = json.ToString();
                 JArray jArray = JArray.Parse(jsonData);
@@ -85,25 +86,25 @@ namespace Coin_helper
                 {
                     JToken jtoken = jArray[i];
                     if (Double.Parse(jtoken["beforeVolume"].ToString()).Equals(0.0)) continue;
-                    
-                    ListViewItem lvi = new ListViewItem((i+1).ToString());
+
+                    ListViewItem lvi = new ListViewItem((i + 1).ToString());
                     lvi.SubItems.Add(jtoken["coinName"].ToString());
                     double volume = Double.Parse(jtoken["nowVolume"].ToString());
                     double price = Double.Parse(jtoken["nowPrice"].ToString());
-                    long amount = (long) Double.Parse(jtoken["nowAmount"].ToString());
+                    long amount = (long)Double.Parse(jtoken["nowAmount"].ToString());
                     lvi.SubItems.Add(price.ToString());
                     lvi.SubItems.Add(volume.ToString());
                     lvi.SubItems.Add(amount.ToString());
-                    
-                    if (this.sortRule.Equals("volume")) 
+
+                    if (this.sortRule.Equals("volume"))
                         lvi.SubItems.Add((Math.Round((((volume / Double.Parse(jtoken["beforeVolume"].ToString()) - 1) * 100)) * 100.0) / 100.0).ToString() + "%");
                     else
                         lvi.SubItems.Add((Math.Round((((price / Double.Parse(jtoken["beforePrice"].ToString()) - 1) * 100)) * 100.0) / 100.0).ToString() + "%");
-                    
+
                     listView1.Items.Add(lvi);
                 }
 
-                
+
 
                 listView1.EndUpdate();
 
@@ -113,7 +114,7 @@ namespace Coin_helper
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             this.sortRule = (String)comboBox1.SelectedItem;
-            
+
         }
 
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
@@ -150,7 +151,7 @@ namespace Coin_helper
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            
+
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -185,6 +186,32 @@ namespace Coin_helper
                 else
                 {
                     MessageBox.Show(jObject["message"].ToString() + "sex");
+                }
+            }
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create("http://ec2-35-72-70-146.ap-northeast-1.compute.amazonaws.com:8080/user/showLevel/" + Form1.id);
+            httpWebRequest.ContentType = "application/json";
+            httpWebRequest.Method = "POST";
+          
+
+            var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+
+            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+            {
+                var result = streamReader.ReadToEnd();
+                int level = int.Parse(result.ToString());
+                
+                if (level > 1)
+                {
+                    AdminForm adminForm = new AdminForm(level);
+                    adminForm.Show();
+                }
+                else
+                {
+                    MessageBox.Show("fail");
                 }
             }
         }
